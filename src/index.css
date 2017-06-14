@@ -1,0 +1,97 @@
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+         -box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.container {
+  width: 700px;
+  margin: 10px auto;
+}
+
+h1 {
+	text-align: center;
+}
+
+.game-info {
+	list-style: none;
+	margin-bottom: 10px;
+}
+.game-info:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+.game-info li {
+	float: left;
+	margin-right: 20px;
+}
+
+.game-board {
+    list-style: none;
+    width: 600px;
+    height: 400px;
+    background: #ebebeb;
+    margin: 20px auto;
+}
+
+
+
+.enemy {
+
+	background: red;
+}
+.player{
+	background: blue;
+}
+.food{
+	background: green;
+}
+.weapon{
+	background: yellow;
+}
+.dungeon-entrance {
+	background: purple;
+}
+
+.enemy,
+.weapon,
+.food,
+.player,
+.dungeon-entrance,
+.floor,
+.outside,
+.wall {
+   margin: 0;
+   width: 20px;
+	height: 20px;
+}
+.square {
+	list-style: none;
+	float: left;
+	width: 20px;
+	height: 20px;  
+    text-align: center;
+    padding: 0;
+    border: 1px solid black;
+}
+
+.floor {
+   background: green;
+}
+
+.outside {
+	background: gray;
+}
+
+.wall {
+	background: black;
+}
