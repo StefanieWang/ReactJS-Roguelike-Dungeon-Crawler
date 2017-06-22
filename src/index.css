@@ -41,6 +41,7 @@ h1 {
     height: 400px;
     background: #ebebeb;
     margin: 20px auto;
+    padding: 0;
 }
 
 
@@ -70,6 +71,7 @@ h1 {
 .floor,
 .outside,
 .wall {
+	font-size: 10px;
    margin: 0;
    width: 20px;
 	height: 20px;
