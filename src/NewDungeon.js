@@ -1,9 +1,9 @@
 const BoardSizeX = 20,
       BoardSizeY = 30,
-      MaxRoomSize = 9,
-      MinRoomSize = 7,
-      MaxRoomNum = 6,
-      MinRoomNum = 4;
+      MaxRoomSize = 8,
+      MinRoomSize = 5,
+      MaxRoomNum = 7,
+      MinRoomNum = 5;
 
 
 const randNum = (max, min) => {
@@ -180,7 +180,7 @@ const NewDungeon = (boardSizeX = BoardSizeX, boardSizeY = BoardSizeY,
     for(let x=0; x<boardSizeX; x++){ //generate a 2D array of the map
         map[x] = [];
     	for(let y=0; y<boardSizeY; y++){
-            map[x][y]=2;//number 2 for area outside of rooms
+            map[x][y]=0;//number 2 for area outside of rooms
     	}
     	
     };
@@ -215,11 +215,15 @@ const NewDungeon = (boardSizeX = BoardSizeX, boardSizeY = BoardSizeY,
     floors.forEach((floorPos) => {
     	let x = floorPos[0];
     	let y = floorPos[1];
-    	map[x][y] = 0; //number 0 for floors
+    	map[x][y] = 1; //number 0 for floors
     });
 
 
-    return map;
+    return {
+        gameMap: map, 
+        floors: floors.concat(walls),
+        
+    };
 }
 
 export default NewDungeon;

@@ -35,6 +35,10 @@ h1 {
 	margin-right: 20px;
 }
 
+.board {
+	position: relative;
+}
+
 .game-board {
     list-style: none;
     width: 600px;
@@ -44,24 +48,19 @@ h1 {
     padding: 0;
 }
 
+.game-info:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.game-end-message {
+    text-align: center;
+    font-size: 40px;
+    color: red;
+}
 
 
-.enemy {
-
-	background: red;
-}
-.player{
-	background: blue;
-}
-.food{
-	background: green;
-}
-.weapon{
-	background: yellow;
-}
-.dungeon-entrance {
-	background: purple;
-}
 
 .enemy,
 .weapon,
@@ -83,17 +82,56 @@ h1 {
 	height: 20px;  
     text-align: center;
     padding: 0;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 .floor {
-   background: green;
+   
+  
+   background: gray;
+    background-image: url('newgrass.jpg');
+    background-size: 20px 20px;
 }
 
 .outside {
-	background: gray;
+	
+	background: brown;
+	background-image: url('darkwall.jpg');
+	
 }
-
+.dark {
+	background: #1a1a1a;
+}
 .wall {
 	background: black;
+}
+
+.entrance {
+	background: purple;
+}
+
+.boss {
+	background: darkred;
+	background-image: url('bigboss.png');
+	background-size: 20px 20px;
+}
+
+.enemy {
+
+	background: red;
+	background-image: url('enemy2.jpg');
+	background-size: 20px 20px;
+}
+.player{
+	background: blue;
+	background-image: url('player.png');
+	background-size: 20px 20px;
+}
+.food{
+	background: green;
+	background-image: url('food.png');
+	background-size: 20px 20px;
+}
+.weapon{
+	background: yellow;
 }
