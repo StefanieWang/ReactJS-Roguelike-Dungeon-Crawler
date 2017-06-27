@@ -304,7 +304,7 @@ class RogueLike extends React.Component {
 
   gameEnd(message){
     if(message === "fail"){
-      this.gameEndMessage = "Oh, you fail!"
+      this.gameEndMessage = "You fail!"
 
     }else{
       this.gameEndMessage = "Congratulations! You beat the big boss!"
@@ -359,48 +359,47 @@ class RogueLike extends React.Component {
       for(let y=0; y<this.boardSizeY; y++){
         let classname; 
         if(x >= displayMapTop && 
-           x <= displayMapBottom)
-        {
-        if(this.state.revealAll || 
-          findInArray([x, y], visibleMap)){
-          const item = gameMap[x][y];         
-          if(typeof(item) === "number"){
-            switch(item){
-              case 0: //outside
-                classname = "outside";
-                break;
-              case 1: //floor
-                classname = "floor";
-                break;
-              case 2: //food
-                classname = "food";
-                break;
-              case 3: // weapon
-                classname = Weapon[this.level].image;
-                break;
-              case 4: // entrance to the next dungeon
-                classname = "entrance"           
-                break;
-            }        
-          }else {
-            switch(item.role){
-              case "enemy":
-                classname = "enemy";
-                break;
-              case "player":
-                classname = "player";
-               
-                break;
-              case "boss":
-                classname = "boss";
-                break;
+           x <= displayMapBottom) {
+          if(this.state.revealAll || 
+            findInArray([x, y], visibleMap)){
+            const item = gameMap[x][y];         
+            if(typeof(item) === "number"){
+              switch(item){
+                case 0: //outside
+                  classname = "outside";
+                  break;
+                case 1: //floor
+                  classname = "floor";
+                  break;
+                case 2: //food
+                  classname = "food";
+                  break;
+                case 3: // weapon
+                  classname = Weapon[this.level].image;
+                  break;
+                case 4: // entrance to the next dungeon
+                  classname = "entrance"           
+                  break;
+              }        
+            }else {
+              switch(item.role){
+                case "enemy":
+                  classname = "enemy";
+                  break;
+                case "player":
+                  classname = "player";
+                 
+                  break;
+                case "boss":
+                  classname = "boss";
+                  break;
+              }
             }
+          }else {
+            classname = "dark";
           }
-        }else {
-          classname = "dark";
-        }
-        
-        gameBoardRows.push(<li key={[x, y]} className={"square "+ classname}></li>);
+          
+          gameBoardRows.push(<li key={[x, y]} className={"square "+ classname}></li>);
         }
       }
     }

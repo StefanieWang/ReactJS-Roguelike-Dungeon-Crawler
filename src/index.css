@@ -37,6 +37,14 @@ h1 {
 	text-align: center;
 }
 
+h3 {
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	margin: 3px auto;
+	color: #ac443b;
+}
+
 .game-header {
 	margin-top: 10px;
 	background: #7490a6;

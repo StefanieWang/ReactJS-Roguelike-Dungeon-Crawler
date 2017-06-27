@@ -8,6 +8,7 @@ class Header extends React.Component {
     return (
       <div className="game-header clear">
         <h1>Roguelike Dungeon Crawler Game</h1>
+        <h3>Kill the boss in dungeon 4</h3>
         <ul className="game-info clear">
           <li key="health">{"Health: " + playerHealth}</li>
           <li key="enemy">{"Enemy Health: " + this.props.enemyHealth}</li>
