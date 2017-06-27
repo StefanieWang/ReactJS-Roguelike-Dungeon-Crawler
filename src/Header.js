@@ -7,15 +7,7 @@ class Header extends React.Component {
     const playerHealth = player.health>0 ? player.health : 0;
     return (
       <div className="game-header clear">
-        <ul className="game-info clear">  
-          <li key="title"><h1>Roguelike Dungeon Crawler Game</h1></li>        
-          <li key="button"><button onClick={this.props.toggleDarkness}>toggle darkness</button></li>
-          <li key="gameEnd">{
-              this.props.gameEnd ? 
-              <button onClick = {this.props.startNewGame}>New Game</button> :
-              null }
-          </li>
-        </ul>
+        <h1>Roguelike Dungeon Crawler Game</h1>
         <ul className="game-info clear">
           <li key="health">{"Health: " + playerHealth}</li>
           <li key="enemy">{"Enemy Health: " + this.props.enemyHealth}</li>
@@ -23,7 +15,17 @@ class Header extends React.Component {
           <li key="level">{"Dungeon: " + this.props.level}</li>
           <li key="weapon">{"Weapon: " + player.weapon.name}</li>
           <li key="xp">{"XP: " + player.xp}</li>  
-        </ul>       
+        </ul> 
+        <ul className="game-info clear">     
+          <li key="enemyNum ">{"Enemies: "+this.props.enemyNum+ " / 10"}</li>   
+          <li key="foodNum">{"Health Items: "+this.props.foodNum+" / 10"}</li>  
+          <li key="button"><button onClick={this.props.toggleDarkness}>toggle darkness</button></li>
+          <li key="gameEnd">{
+              this.props.gameEnd ? 
+              <button onClick = {this.props.startNewGame}>New Game</button> :
+              null }
+          </li>
+        </ul>      
         <div className="game-end-message">{this.props.gameEnd ?
               this.props.gameEndMessage : null}
         </div>
@@ -32,6 +34,3 @@ class Header extends React.Component {
 }
 
 export default Header
-
-/*<li key="damageMake">{"Damage Make: " + this.props.damageMake}</li>
- <li key="damageTake">{"Damage Take: " + this.props.damageTake}</li>*/

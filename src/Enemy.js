@@ -12,7 +12,6 @@ class Enemy {
     this.fight = false;
     this.attack = 7*(level+1);
     this.xp = 5;
-   /* this.position = position;*/
   }
 
   doDamage(){

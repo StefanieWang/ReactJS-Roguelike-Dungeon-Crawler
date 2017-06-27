@@ -161,7 +161,7 @@ const placeNewRoom = (walls, floors) => {
     doorDir = getDoorDir(door, walls, floors);
     if(doorDir) {
         newRoom = generateRoom(door, doorDir);
-        if(isInvalidRoom(newRoom, walls, floors,)){
+        if(isInvalidRoom(newRoom, walls, floors)){
             newRoom = false;
         }else {
             newRoom.floors.push(door);

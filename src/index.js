@@ -13,6 +13,7 @@ For the map
 object: enemy or player
 ================================================================
 */
+
 const Food = [10,20,25,30,40];
 const Weapon = [
                 {
@@ -41,20 +42,6 @@ const Weapon = [
                   image: "weapon-broadsword"
                 }
               ]
-/*const getVisibleMap1 = (x, y) => {
-  return [                                    [x-5, y],
-                                  [x-4, y-1], [x-4, y], [x-4, y+1],
-                      [x-3, y-2], [x-3, y-1], [x-3, y], [x-3, y+1], [x-3, y+2],
-           [x-2, y-3],[x-2, y-2], [x-2, y-1], [x-2, y], [x-2, y+1], [x-2, y+2],[x-2, y+3],
-[x-1, y-4],[x-1, y-3],[x-1, y-2], [x-1, y-1], [x-1, y], [x-1, y+1], [x-1, y+2],[x-1, y+3],[x-1, y+4],
-[x, y-5],[x, y-4],[x, y-3],[x, y-2], [x, y-1],[x, y], [x, y+1], [x, y+2],[x, y+3],[x, y+4],[x, y+5],
-[x+1, y-4],[x+1, y-3],[x+1, y-2], [x+1, y-1], [x+1, y], [x+1, y+1], [x+1, y+2],[x+1, y+3],[x+1, y+4],
-           [x+2, y-3],[x+2, y-2], [x+2, y-1], [x+2, y], [x+2, y+1], [x+2, y+2],[x+2, y+3],
-                      [x+3, y-2], [x+3, y-1], [x+3, y], [x+3, y+1], [x+3, y+2],
-                                  [x+4, y-1], [x+4, y], [x+4, y+1],
-                                              [x+5, y],
-              ];
-}*/
 
 const getVisibleMap = (x, y) => {
   return [             [x-3, y],
@@ -96,13 +83,14 @@ class RogueLike extends React.Component {
       gameMap: [],
 		}
     this.gameEndMessage = undefined;
-    this.damageMake = 0;
-    this.damageTake = 0;
     this.boardSizeX = 20;
     this.boardSizeY = 30;
+    this.displayMapHeight = 10;//only show 10 squares vertically
     this.player = undefined;
     this.level = 0;  		
     this.enemyArray = [];
+    this.enemyNum = 10;
+    this.foodNum = 10;
     this.makeMovement = this.makeMovement.bind(this);
     this.enemy = undefined;
 	}
@@ -165,18 +153,18 @@ class RogueLike extends React.Component {
     }else {
       map = this.placeItems(map.floors, map.gameMap, "boss", 1)
     }
-
+    this.enemyNum = 10;
+    this.foodNum = 10;
     return { gameMap: map.gameMap, floors: map.floors }
   }
   
   startNewGame(){    
     this.level = 0;
     this.gameEndMessage = undefined;
-    this.damageMake = 0;
-    this.damageTake = 0;
     this.player = undefined;    
     this.enemyArray = [];
     this.enemy = undefined;
+
     const map = this.generateNewMap(0);
     window.addEventListener("keydown", this.makeMovement);
     this.setState({
@@ -227,14 +215,10 @@ class RogueLike extends React.Component {
     let damage;
     if(!enemy.fight){
       damage = this.player.doDamage();
-      this.damageMake = damage;
-      this.damageTake = 0;
       enemy.getDamage(damage);
       enemy.fight = true;
     }else{
       damage = enemy.doDamage();
-      this.damageTake = damage;
-      this.damageMake = 0;
       this.player.getDamage(damage);
       enemy.fight = false;
     }
@@ -251,6 +235,7 @@ class RogueLike extends React.Component {
           case 2: //food
             const health = Food[this.level];
             this.player.pickUpItem("food", health);
+            this.foodNum--;
             gameMap = this.replaceItem(position, gameMap);
             break;
           case 3: // weapon
@@ -277,6 +262,7 @@ class RogueLike extends React.Component {
           }
           else{
             this.player.pickUpItem("xp", enemy.xp);
+            this.enemyNum--;
             this.enemy = undefined;
             gameMap = this.replaceItem(position, gameMap);            
           }
@@ -335,7 +321,7 @@ class RogueLike extends React.Component {
       revealAll: !revealAll
     })
   }
-
+  
   componentWillMount(){
     const map = this.generateNewMap(0);    
     this.setState({
@@ -346,22 +332,35 @@ class RogueLike extends React.Component {
 
   componentDidMount(){
     window.addEventListener("keydown", this.makeMovement);
+   
   }
-
+ 
   componentWillUnmount(){
     window.removeEventListener("keydown", this.makeMovement);
   }
-
+  
   render() { 	
-    /*const gameEndMessage = this.gameEnd ? this.gameEndMessage : null;*/
     const enemyHealth = this.enemy && this.enemy.health>0 ? 
                         this.enemy.health : 0;
     const gameMap = this.state.gameMap;
     let gameBoardRows = [];
-    const visibleMap = getVisibleMap(this.player.position[0], this.player.position[1]);
+    const playerX = this.player.position[0];
+    const playerY = this.player.position[1];
+    const displayMapTop = playerX - this.displayMapHeight/2 > 0 ?
+                          playerX - this.displayMapHeight/2 :
+                          0;
+    const displayMapBottom = displayMapTop + this.displayMapHeight -1;
+    const displayMapLeft = playerX - this.displayMapWidth/2 > 0 ?
+                            playerX - this.displayMapWidth/2 :
+                            0;
+    const displayMapRight = displayMapLeft + this.displayMapWidth -1;
+    const visibleMap = getVisibleMap(playerX, playerY);
     for(let x=0; x<this.boardSizeX; x++){
       for(let y=0; y<this.boardSizeY; y++){
-        let classname;
+        let classname; 
+        if(x >= displayMapTop && 
+           x <= displayMapBottom)
+        {
         if(this.state.revealAll || 
           findInArray([x, y], visibleMap)){
           const item = gameMap[x][y];         
@@ -390,6 +389,7 @@ class RogueLike extends React.Component {
                 break;
               case "player":
                 classname = "player";
+               
                 break;
               case "boss":
                 classname = "boss";
@@ -401,6 +401,7 @@ class RogueLike extends React.Component {
         }
         
         gameBoardRows.push(<li key={[x, y]} className={"square "+ classname}></li>);
+        }
       }
     }
     
@@ -409,10 +410,10 @@ class RogueLike extends React.Component {
         <Header player = {this.player}
                 level = {this.level}
                 enemyHealth = {enemyHealth}
-                damageTake = {this.damageTake}
-                damageMake = {this.damageMake}
                 toggleDarkness = {this.toggleDarkness.bind(this)}
                 gameEnd = {this.state.gameEnd}
+                enemyNum = {this.enemyNum}
+                foodNum = {this.foodNum}
                 gameEndMessage = {this.gameEndMessage}
                 startNewGame = {this.startNewGame.bind(this)}/>
         <div className="board">          
