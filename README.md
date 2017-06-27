@@ -20,4 +20,4 @@ This is a roguelike dungeon crawler game built with React. It fullfilled the fol
 
 9. The game should be challenging, but theoretically winnable.
 
-[Please view demo here](http://htmlpreview.github.io/?https://github.com/StefanieWang/ReactJS-Roguelike-Dungeon-Crawler/blob/master/public/index.html)
+[Please view online demo here](https://codepen.io/StefanieWang/pen/EXbyrr)
