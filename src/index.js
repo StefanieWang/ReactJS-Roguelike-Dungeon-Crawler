@@ -1,6 +1,6 @@
+import 'reset-css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Map from './Map';
 import './index.css';
 import NewDungeon from './NewDungeon.js'
 import { Boss, Enemy} from './Enemy.js'
@@ -16,27 +16,32 @@ object: enemy or player
 const Food = [10,20,25,30,40];
 const Weapon = [
                 {
-                  name: "Steel Stick",
-                  attack: 10
+                  name: "Knife",
+                  attack: 10,
+                  image: "weapon-knife"
+                },
+                {
+                  name: "Axe",
+                  attack: 15,
+                  image: "weapon-axe"
+                },
+                {
+                  name: "Double Axes",
+                  attack: 20,
+                  image: "weapon-double-axes"
+                },
+                {
+                  name: "Sword",
+                  attack: 25,
+                  image: "weapon-sword"
                 },
                 {
                   name: "Broadsword",
-                  attack: 15
-                },
-                {
-                  name: "Spear",
-                  attack: 20
-                },
-                {
-                  name: "Stick",
-                  attack: 25
-                },
-                {
-                  name: "Stick",
-                  attack: 30
+                  attack: 30,
+                  image: "weapon-broadsword"
                 }
               ]
-const getVisibleMap = (x, y) => {
+/*const getVisibleMap1 = (x, y) => {
   return [                                    [x-5, y],
                                   [x-4, y-1], [x-4, y], [x-4, y+1],
                       [x-3, y-2], [x-3, y-1], [x-3, y], [x-3, y+1], [x-3, y+2],
@@ -49,7 +54,18 @@ const getVisibleMap = (x, y) => {
                                   [x+4, y-1], [x+4, y], [x+4, y+1],
                                               [x+5, y],
               ];
-}
+}*/
+
+const getVisibleMap = (x, y) => {
+  return [             [x-3, y],
+           [x-2, y-1], [x-2, y], [x-2, y+1], 
+[x-1, y-2], [x-1, y-1], [x-1, y], [x-1, y+1], [x-1, y+2],
+[x, y-3],[x, y-2], [x, y-1],[x, y], [x, y+1], [x, y+2],[x, y+3],
+[x+1, y-2], [x+1, y-1], [x+1, y], [x+1, y+1], [x+1, y+2],
+           [x+2, y-1], [x+2, y], [x+2, y+1],
+                      [x+3, y],                                        
+              ];
+} 
 
 const findInArray = (item, array) => {
   return array.find((i) => {
@@ -76,8 +92,8 @@ class RogueLike extends React.Component {
 		super();
 		this.state = {
 			gameEnd: false,
-      revealAll: true,
-      gameMap: [0,1,1,1,1,1,2,{role: "player"},2,1,1,2,2,{role: "enemy"},1,1,1,1,1,1,0,0,0,0,0],
+      revealAll: false,
+      gameMap: [],
 		}
     this.gameEndMessage = undefined;
     this.damageMake = 0;
@@ -151,6 +167,23 @@ class RogueLike extends React.Component {
     }
 
     return { gameMap: map.gameMap, floors: map.floors }
+  }
+  
+  startNewGame(){    
+    this.level = 0;
+    this.gameEndMessage = undefined;
+    this.damageMake = 0;
+    this.damageTake = 0;
+    this.player = undefined;    
+    this.enemyArray = [];
+    this.enemy = undefined;
+    const map = this.generateNewMap(0);
+    window.addEventListener("keydown", this.makeMovement);
+    this.setState({
+      gameMap: map.gameMap,
+      revealAll: false,
+      gameEnd: false
+    })
   }
 
   updateMap(gameMap){
@@ -255,6 +288,7 @@ class RogueLike extends React.Component {
   }
 
   makeMovement(e){
+    e.stopPropagation();
     const gameMap = this.state.gameMap;
     const keycode = e.keyCode;
     const playerPos = this.player.position;
@@ -319,8 +353,9 @@ class RogueLike extends React.Component {
   }
 
   render() { 	
-    const gameEndMessage = this.gameEnd ? this.gameEndMessage : null;
-    const enemyHealth = this.enemy ? this.enemy.health : 0;
+    /*const gameEndMessage = this.gameEnd ? this.gameEndMessage : null;*/
+    const enemyHealth = this.enemy && this.enemy.health>0 ? 
+                        this.enemy.health : 0;
     const gameMap = this.state.gameMap;
     let gameBoardRows = [];
     const visibleMap = getVisibleMap(this.player.position[0], this.player.position[1]);
@@ -342,7 +377,7 @@ class RogueLike extends React.Component {
                 classname = "food";
                 break;
               case 3: // weapon
-                classname = "weapon";
+                classname = Weapon[this.level].image;
                 break;
               case 4: // entrance to the next dungeon
                 classname = "entrance"           
@@ -370,17 +405,18 @@ class RogueLike extends React.Component {
     }
     
     return (
-    	<div className="container">
-        <h1>Roguelike Dungeon Crawler Game</h1>    		
+    	<div className="container">           		
         <Header player = {this.player}
                 level = {this.level}
                 enemyHealth = {enemyHealth}
                 damageTake = {this.damageTake}
                 damageMake = {this.damageMake}
-                toggleDarkness = {this.toggleDarkness.bind(this)} />
-        <div className="board">
-          <div className="game-end-message">{gameEndMessage}</div>
-    		  <ul className="game-board">
+                toggleDarkness = {this.toggleDarkness.bind(this)}
+                gameEnd = {this.state.gameEnd}
+                gameEndMessage = {this.gameEndMessage}
+                startNewGame = {this.startNewGame.bind(this)}/>
+        <div className="board">          
+    		  <ul className="game-board clear">
 	    		 {gameBoardRows}	
     		  </ul>         
         </div>

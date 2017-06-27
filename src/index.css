@@ -1,3 +1,5 @@
+
+
 *,
 *:before,
 *:after {
@@ -6,30 +8,53 @@
          -box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
-
-.container {
-  width: 700px;
-  margin: 10px auto;
-}
-
-h1 {
-	text-align: center;
-}
-
-.game-info {
-	list-style: none;
-	margin-bottom: 10px;
-}
-.game-info:after {
+.clear:before,
+.clear:after {
 	content: "";
 	display: block;
 	clear: both;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #042238;
+  color:#042238;
+}
+
+.container {
+  width: 1000px;
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+h1 {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 5px auto;
+	text-align: center;
+}
+
+.game-header {
+	position: fixed;
+	top: 10;
+	z-index: 99;
+	background: #7490a6;
+	border-radius: 10px;
+	padding: 5px;	
+}
+
+.game-info {
+	display: flex;
+	justify-content: center;
+	list-style: none;	
+	margin-bottom: 5px;
+}
+
 .game-info li {
 	float: left;
 	margin-right: 20px;
@@ -37,44 +62,31 @@ h1 {
 
 .board {
 	position: relative;
+	width: 640px;
+	height: 440px;
+	margin-top: 80px;
+	border: 20px solid #7490a6;
+	border-radius: 10px;
+	background: url('images/ocean.jpg');
+    
 }
 
 .game-board {
     list-style: none;
     width: 600px;
     height: 400px;
-    background: #ebebeb;
-    margin: 20px auto;
+    margin-top: 0;
+    /*margin: 20px auto;*/
     padding: 0;
 }
 
-.game-info:after {
-	content: "";
-	display: block;
-	clear: both;
-}
-
 .game-end-message {
+	margin: 10px;
     text-align: center;
     font-size: 40px;
-    color: red;
+    color: #ac443b;
 }
 
-
-
-.enemy,
-.weapon,
-.food,
-.player,
-.dungeon-entrance,
-.floor,
-.outside,
-.wall {
-	font-size: 10px;
-   margin: 0;
-   width: 20px;
-	height: 20px;
-}
 .square {
 	list-style: none;
 	float: left;
@@ -85,53 +97,87 @@ h1 {
     /*border: 1px solid black;*/
 }
 
-.floor {
-   
-  
-   background: gray;
-    background-image: url('newgrass.jpg');
+.floor { 
+    background: gray;
+    background-image: url('images/tile3.jpg');
     background-size: 20px 20px;
 }
 
-.outside {
-	
-	background: brown;
-	background-image: url('darkwall.jpg');
+.outside {	
+	/*background: brown;
+	background-image: url('images/sea.jpg');*/
 	
 }
 .dark {
 	background: #1a1a1a;
 }
-.wall {
-	background: black;
-}
 
 .entrance {
 	background: purple;
+	background-image: url('images/entrance.png');
+	background-size: 20px 20px;
 }
 
 .boss {
 	background: darkred;
-	background-image: url('bigboss.png');
+	background-image: url('images/bigboss.png');
 	background-size: 20px 20px;
 }
 
 .enemy {
-
 	background: red;
-	background-image: url('enemy2.jpg');
+	background-image: url('images/enemy2.jpg');
 	background-size: 20px 20px;
 }
 .player{
 	background: blue;
-	background-image: url('player.png');
+	background-image: url('images/player.png');
 	background-size: 20px 20px;
 }
 .food{
 	background: green;
-	background-image: url('food.png');
+	background-image: url('images/drink.png');
 	background-size: 20px 20px;
 }
-.weapon{
+
+
+.weapon-knife {
+   background: yellow;
+	background-image: url('images/knife.png');
+	background-size: 20px 20px;
+}
+.weapon-axe{
 	background: yellow;
+	background-image: url('images/axe.png');
+	background-size: 20px 20px;
+
+}
+.weapon-double-axes{
+	background: yellow;
+	background-image: url('images/double-axes.png');
+	background-size: 20px 20px;
+
+}
+.weapon-sword{
+	background: yellow;
+	background-image: url('images/sword.png');
+	background-size: 20px 20px;
+
+}
+
+.weapon-broadsword{
+	background: yellow;
+	background-image: url('images/broadsword.png');
+	background-size: 20px 20px;
+
+}
+
+button {
+	font-family: sans-serif;
+	padding: 5px;
+	/*border: 1px solid #042238;*/
+	border-radius: 5px;
+	/*background: #042238;
+	color: #fff;*/
+	cursor: pointer;
 }
