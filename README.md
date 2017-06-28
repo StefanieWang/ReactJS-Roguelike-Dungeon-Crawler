@@ -10,14 +10,14 @@ This is a roguelike dungeon crawler game built with React. It fullfilled the fol
 
 4. Player can move anywhere within the map's boundaries, but can't move through an enemy until it has been beaten.
 
-5. Much of the map is hidden. When player take a step, all spaces that are within a certain number of spaces from the player are revealed.
+5. Much of the map is hidden. When player takes a step, all spaces that are within a certain number of spaces from the player are revealed.
 Player can choose to reveal or hide map by pressing the "toggle darkness" button.
 
-6. When player beat an enemy, the enemy goes away and player get XP, which eventually increases player level.
+6. When player beats an enemy, the enemy goes away and player gets XP, which eventually increases player level.
 
-7. When player fight an enemy, they take turns damaging each other until one loses. Player do damage based off of his/her level and weapon. The enemy does damage based off of its level. Damage is somewhat random within a range.
+7. When player fights an enemy, they take turns damaging each other until one loses. Player does damage based off of his/her level and weapon. The enemy does damage based off of its level. Damage is somewhat random within a range.
 
-8. When player find and beat the boss on dungeon 4, player wins. When player run out of health points, player fails. 
+8. When player finds and beats the boss on dungeon 4, player wins. When player runs out of health points, player fails. 
 Player can then start a new game.
 
 
