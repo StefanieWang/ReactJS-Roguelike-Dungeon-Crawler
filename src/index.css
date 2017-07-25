@@ -72,7 +72,8 @@ h3 {
 	margin-top: 10px;
 	border: 10px solid #7490a6;
 	border-radius: 10px;
-	background: url('images/ocean.jpg');
+	background: #4286f4;
+	/*background: url('images/ocean.jpg');*/
     
 }
 

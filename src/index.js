@@ -7,13 +7,6 @@ import { Boss, Enemy} from './Enemy.js'
 import Player from './Player.js'
 import Header from './Header'
 
-/*=============================================================
-For the map 
-0: outside area, 1: floors, 2: food, 3: weapon, 4: entrance
-object: enemy or player
-================================================================
-*/
-
 const Food = [10,20,25,30,40];
 const Weapon = [
                 {
@@ -23,22 +16,22 @@ const Weapon = [
                 },
                 {
                   name: "Axe",
-                  attack: 15,
+                  attack: 20,
                   image: "weapon-axe"
                 },
                 {
                   name: "Double Axes",
-                  attack: 20,
+                  attack: 30,
                   image: "weapon-double-axes"
                 },
                 {
                   name: "Sword",
-                  attack: 25,
+                  attack: 35,
                   image: "weapon-sword"
                 },
                 {
                   name: "Broadsword",
-                  attack: 30,
+                  attack: 40,
                   image: "weapon-broadsword"
                 }
               ]
@@ -85,14 +78,15 @@ class RogueLike extends React.Component {
     this.gameEndMessage = undefined;
     this.boardSizeX = 20;
     this.boardSizeY = 30;
-    this.displayMapHeight = 10;//only show 10 squares vertically
+    this.displayWindowHeight = 10;//only show 10 squares vertically
     this.player = undefined;
+    this.enemy = undefined;
     this.level = 0;  		
     this.enemyArray = [];
     this.enemyNum = 10;
     this.foodNum = 10;
     this.makeMovement = this.makeMovement.bind(this);
-    this.enemy = undefined;
+    
 	}
     
 
@@ -148,9 +142,9 @@ class RogueLike extends React.Component {
     map = this.placeItems(map.floors, map.gameMap, "food", num)
     map = this.placeItems(map.floors, map.gameMap, "weapon", 1)
     map = this.placeItems(map.floors, map.gameMap, "player", 1, level)
-    if(level < 4){
+    if(level < 4){ //no entrance in dungeon 4
       map = this.placeItems(map.floors, map.gameMap, "entrance", 1)
-    }else {
+    }else { // boss is in dungeon 4
       map = this.placeItems(map.floors, map.gameMap, "boss", 1)
     }
     this.enemyNum = 10;
@@ -202,22 +196,20 @@ class RogueLike extends React.Component {
   isInvalidMove(position, gameMap){
     const x = position[0];
     const y = position[1];
-    let invalid = false;
-    if (x < 0 ||  y < 0 ||
-        x >= this.boardSizeX || y >= this.boardSizeY ||
-        gameMap[x][y] === 0){
-      invalid = true;
-    }
-    return invalid;
+    return (x < 0 ||  y < 0 ||
+        x >= this.boardSizeX || 
+        y >= this.boardSizeY ||
+        gameMap[x][y] === 0)
+      
   }
 
-  fightEnemy(enemy){
+  fightEnemy(enemy){ //player and enemy take turns to do damage
     let damage;
-    if(!enemy.fight){
+    if(!enemy.fight){ //player's turn to do damage
       damage = this.player.doDamage();
       enemy.getDamage(damage);
       enemy.fight = true;
-    }else{
+    }else{  //enemy's turn to do damage
       damage = enemy.doDamage();
       this.player.getDamage(damage);
       enemy.fight = false;
@@ -247,8 +239,8 @@ class RogueLike extends React.Component {
             gameMap = this.nextDungeon(this.level);            
             break;
         }
-        this.damageMake = 0;
-        this.damageTake = 0;
+        /*this.damageMake = 0;
+        this.damageTake = 0;*/
       }else {
         const enemy = item;
         this.enemy = enemy;
@@ -278,8 +270,8 @@ class RogueLike extends React.Component {
     const gameMap = this.state.gameMap;
     const keycode = e.keyCode;
     const playerPos = this.player.position;
-    console.log(keycode);
-    console.log(playerPos);
+    /*console.log(keycode);
+    console.log(playerPos);*/
     let x = playerPos[0];
     let y = playerPos[1];
     switch(keycode){
@@ -339,29 +331,23 @@ class RogueLike extends React.Component {
     window.removeEventListener("keydown", this.makeMovement);
   }
   
-  render() { 	
-    const enemyHealth = this.enemy && this.enemy.health>0 ? 
-                        this.enemy.health : 0;
+  getGameBoardRows(){
     const gameMap = this.state.gameMap;
     let gameBoardRows = [];
     const playerX = this.player.position[0];
     const playerY = this.player.position[1];
-    const displayMapTop = playerX - this.displayMapHeight/2 > 0 ?
-                          playerX - this.displayMapHeight/2 :
-                          0;
-    const displayMapBottom = displayMapTop + this.displayMapHeight -1;
-    const displayMapLeft = playerX - this.displayMapWidth/2 > 0 ?
-                            playerX - this.displayMapWidth/2 :
-                            0;
-    const displayMapRight = displayMapLeft + this.displayMapWidth -1;
+    const displayWindowTop = playerX - this.displayWindowHeight/2 > 0 ? // only display the area around player
+                           playerX - this.displayWindowHeight/2 :
+                           0;
+    const displayWindowBottom = displayWindowTop + this.displayWindowHeight -1;    
     const visibleMap = getVisibleMap(playerX, playerY);
     for(let x=0; x<this.boardSizeX; x++){
       for(let y=0; y<this.boardSizeY; y++){
         let classname; 
-        if(x >= displayMapTop && 
-           x <= displayMapBottom) {
+        if(x >= displayWindowTop &&  // x is within the display window
+           x <= displayWindowBottom) {
           if(this.state.revealAll || 
-            findInArray([x, y], visibleMap)){
+            findInArray([x, y], visibleMap)){ //if [x, y] is in the visible area
             const item = gameMap[x][y];         
             if(typeof(item) === "number"){
               switch(item){
@@ -387,15 +373,14 @@ class RogueLike extends React.Component {
                   classname = "enemy";
                   break;
                 case "player":
-                  classname = "player";
-                 
+                  classname = "player";                
                   break;
                 case "boss":
                   classname = "boss";
                   break;
               }
             }
-          }else {
+          }else {  // if [x,y] is outside visible area(darness)
             classname = "dark";
           }
           
@@ -403,6 +388,13 @@ class RogueLike extends React.Component {
         }
       }
     }
+    return gameBoardRows;
+  }
+
+  render() { 	
+    const enemyHealth = this.enemy && this.enemy.health>0 ? 
+                        this.enemy.health : 0;
+    const gameBoardRows = this.getGameBoardRows();
     
     return (
     	<div className="container">           		

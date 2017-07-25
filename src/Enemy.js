@@ -7,7 +7,7 @@ class Enemy {
   constructor(level){
     this.level = level;
     this.role = "enemy";
-    this.health = 40*(level+1) > 100 ? 100 : 40*(level+1) ;
+    this.health = 40*(level+1) > 100 ? 100 : 40*(level+1);
     this.alive = true;
     this.fight = false;
     this.attack = 7*(level+1);
@@ -15,7 +15,7 @@ class Enemy {
   }
 
   doDamage(){
-    const damage = randNum(5*(this.level+1), this.attack);
+    const damage = randNum(5, this.attack);
     return damage;
   }
 
@@ -33,8 +33,8 @@ class Boss extends Enemy {
     super(level);
     this.level = 4;
     this.role = "boss";
-    this.health = 200;
-    this.attack = 45;
+    this.health = 250;
+    this.attack = 100;
   }
 }
 

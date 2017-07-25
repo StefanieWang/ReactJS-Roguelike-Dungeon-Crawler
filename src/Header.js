@@ -1,5 +1,6 @@
 import 'reset-css';
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render(){  
@@ -34,4 +35,15 @@ class Header extends React.Component {
   }
 }
 
+Header.propTypes = {
+  player: PropTypes.object.isRequired,
+  level: PropTypes.number.isRequired,
+  enemyHealth: PropTypes.number.isRequired, 
+  gameEnd: PropTypes.bool.isRequired,
+  enemyNum: PropTypes.number.isRequired,
+  foodNum: PropTypes.number.isRequired,
+  gameEndMessage: PropTypes.string,
+  toggleDarkness: PropTypes.func.isRequired,
+  startNewGame: PropTypes.func.isRequired
+}
 export default Header

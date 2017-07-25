@@ -32,8 +32,8 @@ const findWall = (start, roomSize, type) => {
 	return wall;
 }
 
-const findFloors = (start, end) => {
-	let floors = [];
+const findFloors = (start, end) => { // start is the top left position, 
+	let floors = [];                // end is the bottom right position of a room
 	for(let x=start[0]+1; x<end[0]; x++){
 		for(let y=start[1]+1; y<end[1]; y++){
             floors.push([x,y]);
@@ -48,7 +48,7 @@ const generateWalls = (start, roomSizeX, roomSizeY) => {
 	const wallLeft = findWall(start, roomSizeX, "verti");
 	const wallRight = findWall(wallTop[roomSizeY-2], roomSizeX, "verti");
 	let wallBottom = findWall(wallLeft[roomSizeX-2], roomSizeY, "hori");
-	wallBottom.pop()
+	wallBottom.pop() // remove the repeated position
 
 	const walls = [start].concat(wallTop, wallLeft, wallBottom, wallRight);
 	return walls;
@@ -56,9 +56,9 @@ const generateWalls = (start, roomSizeX, roomSizeY) => {
 
 const generateNewRoom = (start, roomSizeX, roomSizeY) => {	
     const walls = generateWalls(start, roomSizeX, roomSizeY);
-    const end = walls[walls.length - 1];
+    const end = walls[walls.length - 1]; // the bottom right position of a room
     const floors = findFloors(start, end);
-    return {"walls": walls, "floors": floors};
+    return {"walls": walls, "floors": floors}; //an enclosed room without doors
 
 }
 
@@ -153,8 +153,7 @@ const getRandDoor = (walls) => {
     return walls[randIndex];//door is a random position found in walls, door is an array[x,y];
 }
 
-//roomNum is the number of rooms need to be generated,
-//firstRooms is an object like {walls: [], floors:[]}, containing positions of first room
+
 const placeNewRoom = (walls, floors) => {   
     let door, doorDir, newRoom;
     door = getRandDoor(walls);
@@ -172,7 +171,8 @@ const placeNewRoom = (walls, floors) => {
     return newRoom;
 }
 
-
+//roomNum is the number of rooms need to be generated,
+//firstRoom is an object like {walls: [], floors:[]}, containing positions of first room
 const NewDungeon = (boardSizeX = BoardSizeX, boardSizeY = BoardSizeY, 
 	                maxRoomNum = MaxRoomNum, minRoomNum = MinRoomNum, 
 	                maxRoomSize = MinRoomSize, minRoomSize = MaxRoomSize) => {
@@ -180,7 +180,7 @@ const NewDungeon = (boardSizeX = BoardSizeX, boardSizeY = BoardSizeY,
     for(let x=0; x<boardSizeX; x++){ //generate a 2D array of the map
         map[x] = [];
     	for(let y=0; y<boardSizeY; y++){
-            map[x][y]=0;//number 2 for area outside of rooms
+            map[x][y]=0;//number 0 for area outside of rooms
     	}
     	
     };
@@ -215,7 +215,7 @@ const NewDungeon = (boardSizeX = BoardSizeX, boardSizeY = BoardSizeY,
     floors.forEach((floorPos) => {
     	let x = floorPos[0];
     	let y = floorPos[1];
-    	map[x][y] = 1; //number 0 for floors
+    	map[x][y] = 1; //number 1 for floors
     });
 
 

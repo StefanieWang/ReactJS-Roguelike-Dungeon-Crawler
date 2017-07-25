@@ -14,7 +14,7 @@ class Player {
   }
 
   doDamage(){
-    const damage = randNum(5, this.xp+this.weapon.attack*2);
+    const damage = randNum(5*(this.level+1), (this.xp)/2+this.weapon.attack);
     return damage
   }
 
